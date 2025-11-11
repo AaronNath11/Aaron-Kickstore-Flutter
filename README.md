@@ -1,3 +1,31 @@
+Tugas 8
+
+
+Nomor 1 : Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+
+
+Navigator.push() digunakan untuk menambahkan halaman baru di atas tumpukan (stack) halaman yang sedang aktif sehingga pengguna masih dapat kembali ke halaman sebelumnya menggunakan tombol “back”. Sementara itu, Navigator.pushReplacement() menggantikan halaman yang sedang aktif dengan halaman baru dan menghapus halaman lama dari tumpukan, sehingga pengguna tidak dapat kembali ke halaman sebelumnya. Dalam konteks aplikasi Football Shop punya saya, Navigator.push() sebaiknya digunakan ketika kita ingin membuka halaman yang bersifat sementara, seperti melihat detail produk dari daftar produk. Sedangkan Navigator.pushReplacement() cocok digunakan ketika kita ingin mengganti halaman secara permanen, misalnya setelah pengguna berhasil login atau logout sehingga tidak bisa kembali ke halaman sebelumnya. (Sumber: Flutter Official Documentation - Navigation and Routing)
+
+
+Nomor 2 : Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+
+
+Hierarchy widget seperti Scaffold, AppBar, dan Drawer dimanfaatkan untuk menjaga konsistensi tampilan di seluruh aplikasi. Scaffold berperan sebagai kerangka utama yang menampung struktur dasar halaman seperti AppBar di bagian atas, Drawer di sisi kiri, dan body sebagai konten utama. AppBar digunakan untuk menampilkan judul halaman serta tombol aksi, sementara Drawer berfungsi sebagai menu navigasi yang memudahkan pengguna berpindah antarhalaman dengan cepat. Dengan menempatkan komponen-komponen ini secara konsisten pada setiap halaman, kita dapat menciptakan pengalaman pengguna yang seragam, mudah digunakan, dan memiliki struktur visual yang rapih di seluruh bagian aplikasi. (Sumber: Flutter.dev - Scaffold class documentation)
+
+
+Nomor 3 : Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+
+
+Penggunaan layout widget seperti Padding, SingleChildScrollView, dan ListView memberikan banyak keuntungan dalam menata elemen-elemen form. Padding digunakan untuk memberikan jarak antar elemen agar tampilannya lebih nyaman dibaca. SingleChildScrollView berguna agar seluruh isi form tetap dapat di-scroll ke bawah ketika jumlah elemen melebihi tinggi layar, sehingga pengguna tetap bisa mengisi semua data tanpa terpotong. Sementara itu, ListView sangat efisien untuk menampilkan daftar elemen yang banyak karena hanya merender bagian yang terlihat di layar. Dalam aplikasi Football Shop saya, kombinasi Padding dan SingleChildScrollView digunakan pada halaman tambah produk agar setiap field input tetap terlihat rapih dan dapat di-scroll di perangkat dengan layar yang kecil. (Sumber: Flutter.dev - Layout widgets guide)
+
+
+Nomor 4 : Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+
+
+Penyesuaian warna tema dilakukan dengan menggunakan properti ThemeData pada widget MaterialApp untuk menentukan warna utama, warna aksen, serta gaya visual lainnya. Dengan mendefinisikan satu palet warna utama yang sesuai dengan identitas brand toko, seperti biru tua untuk nuansa profesional dan sporty, seluruh elemen seperti AppBar, tombol, dan ikon dapat memiliki tampilan yang konsisten. Ini membuat perubahan warna lebih mudah karena cukup dilakukan di 1 tempat tanpa perlu mengubah setiap widget secara manual. Selain itu, konsistensi warna juga membantu memperkuat identitas visual aplikasi dan memberikan pengalaman yang lebih menyatu bagi pengguna. (Sumber: Flutter.dev - ThemeData class documentation)
+
+
+
 Tugas 7
 
 Nomor 1 : Apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget?
