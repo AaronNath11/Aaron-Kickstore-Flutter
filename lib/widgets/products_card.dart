@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:aaron_kickstore/screens/productslist_form.dart';
+import 'package:aaron_kickstore/screens/products_entry_list.dart';
+import 'package:aaron_kickstore/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ItemHomepage {
   final String name; // Nama tombol
@@ -16,6 +20,7 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       // Menentukan warna latar belakang tombol sesuai item.color
       color: item.color,
@@ -24,7 +29,7 @@ class ItemCard extends StatelessWidget {
 
       child: InkWell(
         // Aksi ketika kartu ditekan.
-        onTap: () {
+        onTap: () async{
           // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -37,6 +42,49 @@ class ItemCard extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => const ProductFormPage()),
               );
+            }
+            else if (item.name == "All Products") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductEntryListPage()
+                    ),
+                );
+            }
+            else if (item.name == "My Products") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductEntryListPage(showMine: true),
+                    ),
+                );
+            }
+            else if (item.name == "Logout") {
+                // TODO: Replace the URL with your app's URL and don't forget to add a trailing slash (/)!
+                // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
+                // If you using chrome,  use URL http://localhost:8000
+
+                final response = await request.logout(
+                    "http://localhost:8000/auth/logout/");
+                String message = response["message"];
+                if (context.mounted) {
+                    if (response['status']) {
+                        String uname = response["username"];
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("$message See you again, $uname."),
+                        ));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                        );
+                    } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(message),
+                            ),
+                        );
+                    }
+                }
             }
 
         },
