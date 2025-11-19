@@ -21,7 +21,6 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
     final response = await request.get('http://localhost:8000/json/');
 
     var data = response;
-
     List<ProductEntry> listProducts = [];
     for (var d in data) {
       if (d != null) {
@@ -41,9 +40,26 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.showMine ? 'My Products' : 'Products Entry List'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            tooltip: widget.showMine ? "Show All Products" : "Show My Products",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductEntryListPage(
+                    showMine: !widget.showMine,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
@@ -63,22 +79,22 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
                 ],
               );
             } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (_, index) => ProductEntryCard(
-                product: snapshot.data![index],
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductDetailPage(
-                        product: snapshot.data![index],
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => ProductEntryCard(
+                  product: snapshot.data![index],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailPage(
+                          product: snapshot.data![index],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
+                    );
+                  },
+                ),
+              );
             }
           }
         },
@@ -86,3 +102,4 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
     );
   }
 }
+

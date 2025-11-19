@@ -69,10 +69,9 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-              leading: const Icon(Icons.add_reaction_rounded),
+              leading: const Icon(Icons.shopping_bag),
               title: const Text('Product List'),
               onTap: () {
-                  // Route to news list page
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
