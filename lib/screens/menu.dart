@@ -21,6 +21,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F7),
       appBar: AppBar(
         title: const Text(
           'Aaron Kickstore',
@@ -29,10 +30,10 @@ class MyHomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: const Color(0xFF6C0EF0),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.purple),
+            icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () async {
               final request = context.read<CookieRequest>();
               await request.logout("http://localhost:8000/auth/logout/");
@@ -71,6 +72,7 @@ class MyHomePage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
@@ -104,18 +106,36 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2.0,
+      elevation: 3,
+      shadowColor: Colors.black12,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Container(
         width: MediaQuery.of(context).size.width / 3.5,
         padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black12),
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           children: [
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
             const SizedBox(height: 8.0),
-            Text(content),
+            Text(
+              content,
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+              ),
+            ),
           ],
         ),
       ),

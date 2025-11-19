@@ -16,7 +16,7 @@ class LeftDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.indigo,
+              color: Colors.purple,
             ),
             child: Column(
               children: [
@@ -45,8 +45,9 @@ class LeftDrawer extends StatelessWidget {
 
           // === Halaman Utama ===
           ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Halaman Utama'),
+            leading: const Icon(Icons.home_outlined, color: Colors.purple),
+            title: const Text('Halaman Utama',
+                style: TextStyle(color: Colors.purple)),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -57,8 +58,9 @@ class LeftDrawer extends StatelessWidget {
 
           // === Tambah Produk ===
           ListTile(
-            leading: const Icon(Icons.add_box_outlined),
-            title: const Text('Tambah Produk'),
+            leading: const Icon(Icons.add_box_outlined, color: Colors.purple),
+            title:
+                const Text('Tambah Produk', style: TextStyle(color: Colors.purple)),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -68,22 +70,29 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+
+          // === Product List ===
           ListTile(
-              leading: const Icon(Icons.shopping_bag),
-              title: const Text('Product List'),
-              onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
-                  );
-              },
+            leading: const Icon(Icons.shopping_bag, color: Colors.purple),
+            title:
+                const Text('Product List', style: TextStyle(color: Colors.purple)),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProductEntryListPage()),
+              );
+            },
           ),
+
+          // === Logout ===
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
+            leading: const Icon(Icons.logout, color: Colors.purple),
+            title: const Text('Logout', style: TextStyle(color: Colors.purple)),
             onTap: () async {
               final request = context.read<CookieRequest>();
               await request.logout("http://localhost:8000/auth/logout/");
+
               if (context.mounted) {
                 Navigator.pushReplacement(
                   context,
@@ -92,7 +101,6 @@ class LeftDrawer extends StatelessWidget {
               }
             },
           ),
-
         ],
       ),
     );

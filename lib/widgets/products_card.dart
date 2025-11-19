@@ -6,11 +6,11 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class ItemHomepage {
-  final String name; // Nama tombol
-  final IconData icon; // Ikon tombol
-  final Color color; // Warna latar belakang tombol
+  final String name;
+  final IconData icon;
+  final Color color;
 
-  ItemHomepage(this.name, this.icon, this.color);
+  ItemHomepage(this.name, this.icon, [this.color = Colors.purple]);
 }
 
 class ItemCard extends StatelessWidget {
@@ -21,87 +21,76 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    return Material(
-      // Menentukan warna latar belakang tombol sesuai item.color
-      color: item.color,
-      // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
 
+    return Material(
+      color: item.color,
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        // Aksi ketika kartu ditekan.
-        onTap: () async{
-          // Menampilkan pesan SnackBar saat kartu ditekan.
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(content: Text("Kamu telah menekan tombol ${item.name}")),
             );
 
-            if (item.name == "Create Product") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProductFormPage()),
-              );
-            }
-            else if (item.name == "All Products") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductEntryListPage()
-                    ),
-                );
-            }
-            else if (item.name == "My Products") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductEntryListPage(showMine: true),
-                    ),
-                );
-            }
-            else if (item.name == "Logout") {
-                // TODO: Replace the URL with your app's URL and don't forget to add a trailing slash (/)!
-                // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
-                // If you using chrome,  use URL http://localhost:8000
+          if (item.name == "Create Product") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductFormPage()),
+            );
+          }
 
-                final response = await request.logout(
-                    "http://localhost:8000/auth/logout/");
-                String message = response["message"];
-                if (context.mounted) {
-                    if (response['status']) {
-                        String uname = response["username"];
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("$message See you again, $uname."),
-                        ));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
-                        );
-                    } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(message),
-                            ),
-                        );
-                    }
-                }
-            }
+          else if (item.name == "All Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductEntryListPage(),
+              ),
+            );
+          }
 
+          else if (item.name == "My Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductEntryListPage(showMine: true),
+              ),
+            );
+          }
+
+          else if (item.name == "Logout") {
+            final response = await request.logout(
+              "http://localhost:8000/auth/logout/",
+            );
+
+            String message = response["message"];
+
+            if (context.mounted) {
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$message See you again, $uname.")),
+                );
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message)),
+                );
+              }
+            }
+          }
         },
-        // Container untuk menyimpan Icon dan Text.
         child: Container(
           padding: const EdgeInsets.all(8),
           child: Center(
             child: Column(
-              // Menyusun ikon dan teks di tengah kartu.
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
+                Icon(item.icon, color: Colors.white, size: 30.0),
+                const SizedBox(height: 4),
                 Text(
                   item.name,
                   textAlign: TextAlign.center,

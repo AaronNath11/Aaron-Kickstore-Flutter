@@ -17,8 +17,32 @@ class LoginApp extends StatelessWidget {
       title: 'Login',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-          .copyWith(secondary: Colors.blueAccent[400]),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF6C0EF0),
+          secondary: Color(0xFF9D4DFF),
+          surface: Color(0xFFF5F5F7),
+          background: Color(0xFFF5F5F7),
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black87,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF5F5F7),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF6C0EF0),
+          foregroundColor: Colors.white,
+          elevation: 2,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF6C0EF0),
+            foregroundColor: Colors.white,
+            minimumSize: const Size(double.infinity, 50),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+          ),
+        ),
       ),
       home: const LoginPage(),
     );
@@ -41,96 +65,80 @@ class _LoginPageState extends State<LoginPage> {
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Login'),
-        ),
-        body: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            elevation: 8,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
                     'Login',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 28.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF6C0EF0),
                     ),
                   ),
                   const SizedBox(height: 30.0),
+
                   TextField(
                     controller: _usernameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Username',
-                      hintText: 'Enter your username',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                     ),
                   ),
                   const SizedBox(height: 12.0),
+
                   TextField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Password',
-                      hintText: 'Enter your password',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                     ),
                     obscureText: true,
                   ),
+
                   const SizedBox(height: 24.0),
+
                   ElevatedButton(
                     onPressed: () async {
-                      String username = _usernameController.text;
-                      String password = _passwordController.text;
+                      String username = _usernameController.text.trim();
+                      String password = _passwordController.text.trim();
 
-                      // Check credentials
-                      // TODO: Change the URL and don't forget to add trailing slash (/) at the end of URL!
-                      // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
-                      // If you using chrome,  use URL http://localhost:8000
-                      final response = await request
-                          .login("http://localhost:8000/auth/login/", {
-                        'username': username,
-                        'password': password,
-                      });
+                      final response = await request.login(
+                        "http://localhost:8000/auth/login/",
+                        {'username': username, 'password': password},
+                      );
 
                       if (request.loggedIn) {
-                        // Ambil user ID dari backend
-                        final userData = await request.get("http://localhost:8000/get_user/");
-
-                        // Simpan ke request.jsonData agar bisa dipakai halaman lain
+                        final userData =
+                            await request.get("http://localhost:8000/get_user/");
                         request.jsonData['id'] = userData['id'];
-
-                        String message = response['message'];
-                        String uname = response['username'];
 
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => MyHomePage()),
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
                           );
-
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              SnackBar(content: Text("$message Welcome, $uname.")),
-                            );
                         }
-                      }
-                       else {
+                      } else {
                         if (context.mounted) {
                           showDialog(
                             context: context,
@@ -140,9 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                               actions: [
                                 TextButton(
                                   child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
+                                  onPressed: () => Navigator.pop(context),
                                 ),
                               ],
                             ),
@@ -150,32 +156,29 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(double.infinity, 50),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    ),
                     child: const Text('Login'),
                   ),
+
                   const SizedBox(height: 36.0),
+
                   GestureDetector(
-                     onTap: () {
-                       Navigator.push(
-                         context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterPage(),
-                          ),
-                        );
-                     },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        ),
+                      );
+                    },
                     child: Text(
-                      'Don\'t have an account? Register',
+                      "Don't have an account? Register",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 16.0,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
