@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:aaron_kickstore/screens/menu.dart';
 import 'package:aaron_kickstore/screens/productslist_form.dart';
 import 'package:aaron_kickstore/screens/products_entry_list.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:aaron_kickstore/screens/login.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -76,7 +79,20 @@ class LeftDrawer extends StatelessWidget {
                   );
               },
           ),
-
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () async {
+              final request = context.read<CookieRequest>();
+              await request.logout("http://localhost:8000/auth/logout/");
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              }
+            },
+          ),
 
         ],
       ),
